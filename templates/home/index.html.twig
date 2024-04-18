@@ -13,7 +13,7 @@
 							<div class="hs-text">
 								<h2><span>{{dish1.name}}</span></h2>
 								<p> {{dish1.description}} for just ${{dish1.price}} </p>
-								<a href=" {{path('app_menu')}} " class="site-btn"> Menu Card </a>
+								<a href=" {{path('app_menu',{id: dish1.id})}} " class="site-btn"> Menu Card </a>
 								<a href="#" class="site-btn sb-c2">Order Now!</a>
 							</div>
 						</div>
@@ -33,7 +33,7 @@
 								<h2><span>{{dish2.name}}</span></h2>
 								<p> {{dish2.description}} for just ${{dish2.price}} </p>
 								<a href=" {{path('app_menu')}} " class="site-btn"> Menu Card </a>
-								<a href=" {{path('app_order')}} " class="site-btn sb-c2">Order Now!</a>
+								<a href=" {{path('app_order',{id: dish2.id})}} " class="site-btn sb-c2">Order Now!</a>
 								
 							</div>
 						</div>

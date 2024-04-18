@@ -1,20 +1,93 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello OrderController!{% endblock %}
+{% block title %}Hello OrderController!
+{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+	{% set suma = 0 %}
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/home/federico/Escritorio/dev/capa/menu-card/src/Controller/OrderController.php'|file_link(0) }}">src/Controller/OrderController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/home/federico/Escritorio/dev/capa/menu-card/templates/order/index.html.twig'|file_link(0) }}">templates/order/index.html.twig</a></code></li>
-    </ul>
-</div>
+	<br>
+	<div class="container">
+		<h2>
+			Your Order</h2>
+		<br>
+		{% if orders %}
+			<table class='table table-striped'>
+
+				<thead>
+					<tr>
+						{# <td>Order Number</td> #}
+						<td>Name</td>
+						<td>Price</td>
+						<td>Status</td>
+						<td>Delete</td>
+					</tr>
+				</thead>
+				<tbody>
+					{% for order in orders %}
+						{% set suma = suma + order.price %}
+						<tr>
+							{# <td>
+																																																											{{order.oNumber}}
+																																																										</td> #}
+							<td>
+								{{order.name}}
+
+							</td>
+							<td>
+								{{order.price}}
+								u$s
+							</td>
+							{% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+								<td>
+									{{order.status}}
+								</td>
+							{% endif %}
+							{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+								<td>
+									<div class="dropdown show">
+										<a class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+											{{order.status}}
+										</a>
+										<ul class="dropdown-menu">
+											<li>
+												<a class="dropdown-item" href=" {{path('app_status',{id: order.id, status: 'open'})}} ">Open</a>
+											</li>
+											<li>
+												<a class="dropdown-item" href=" {{path('app_status',{id: order.id, status: 'ready'})}} ">Ready</a>
+											</li>
+											<li>
+												<a class="dropdown-item" href=" {{path('app_status',{id: order.id, status: 'closed'})}} ">Closed</a>
+											</li>
+										</ul>
+									</div>
+								</td>
+							{% endif %}
+							{% if order.status == 'open' %}
+								<td>
+									<a class="btn btn-outline-danger btn-sm" href=" {{path('app_order_delete',{id: order.id})}} ">X</a>
+								</td>
+							{% endif %}
+						</tr>
+					{% endfor %}
+					<td></td>
+					<td>
+						{{suma}}
+						u$s
+					</td>
+					<td></td>
+				</tbody>
+
+			</table>
+		{% else %}
+			<h3>
+				There are not any order, please
+				<a href=" {{path('app_menu')}} ">click here</a>
+				and go to menu and add some dish
+			</h3>
+		{% endif %}
+	</div>
+
+
 {% endblock %}
